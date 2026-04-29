@@ -1,33 +1,13 @@
-const PROJECTS = [
-  {
-    title: "Surfers Paradise",
-    tags: ["Social Media", "Photography"],
-    img: "https://www.figma.com/api/mcp/asset/b52324ee-89d2-4d7b-b1c0-8550e31c9c09",
-    cardClass: "h-[390px] lg:h-[744px]",
-    col: "left" as const,
-  },
-  {
-    title: "Cyberpunk Caffe",
-    tags: ["Social Media", "Photography"],
-    img: "https://www.figma.com/api/mcp/asset/92422a18-91a8-4e0d-be9d-65f812983afe",
-    cardClass: "h-[390px] lg:h-[699px]",
-    col: "left" as const,
-  },
-  {
-    title: "Agency 976",
-    tags: ["Social Media", "Photography"],
-    img: "https://www.figma.com/api/mcp/asset/61a4341c-5e3a-4494-8d9f-60b8b5614faf",
-    cardClass: "h-[390px] lg:h-[699px]",
-    col: "right" as const,
-  },
-  {
-    title: "Minimal Playground",
-    tags: ["Social Media", "Photography"],
-    img: "https://www.figma.com/api/mcp/asset/2b5e90d7-dbab-4187-a93d-9c7a7c9c77d8",
-    cardClass: "h-[390px] lg:h-[744px]",
-    col: "right" as const,
-  },
-];
+import { getPortfolioItems, type PortfolioItem } from '@/sanity/client'
+import { urlFor } from '@/sanity/image'
+
+// Heights follow the Figma stagger: positions 0 & 3 are tall, 1 & 2 are standard
+const CARD_CLASSES = [
+  'h-[390px] lg:h-[744px]',
+  'h-[390px] lg:h-[699px]',
+  'h-[390px] lg:h-[699px]',
+  'h-[390px] lg:h-[744px]',
+]
 
 function Tag({ label }: { label: string }) {
   return (
@@ -65,24 +45,31 @@ function CornerBracket() {
   );
 }
 
-function ProjectCard({ title, tags, img, cardClass }: (typeof PROJECTS)[number]) {
+function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
+  const cardClass = CARD_CLASSES[index] ?? 'h-[390px] lg:h-[699px]'
+  const imgSrc = item.coverImage?.asset
+    ? urlFor(item.coverImage).width(800).height(800).fit('crop').url()
+    : null
+
   return (
     <div className="flex flex-col gap-[10px]">
-      <div className={`relative overflow-hidden flex items-end pb-4 pl-4 ${cardClass}`}>
-        <img
-          alt=""
-          className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
-          src={img}
-        />
+      <div className={`relative overflow-hidden flex items-end pb-4 pl-4 ${cardClass} bg-[#e5e5e5]`}>
+        {imgSrc && (
+          <img
+            alt={item.coverImage?.alt ?? item.title}
+            className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
+            src={imgSrc}
+          />
+        )}
         <div className="relative flex gap-3">
-          {tags.map((tag) => (
+          {item.tags?.map((tag: string) => (
             <Tag key={tag} label={tag} />
           ))}
         </div>
       </div>
       <div className="flex items-center justify-between">
         <p className="font-sans font-black leading-[1.1] text-black uppercase tracking-[-0.96px] text-[24px] lg:text-[36px] lg:tracking-[-1.44px]">
-          {title}
+          {item.title}
         </p>
         <ArrowUpRight />
       </div>
@@ -122,10 +109,11 @@ function CtaBox() {
   );
 }
 
-const leftProjects = PROJECTS.filter((p) => p.col === "left");
-const rightProjects = PROJECTS.filter((p) => p.col === "right");
+export default async function SelectedWorkSection() {
+  const projects = await getPortfolioItems()
+  const leftProjects = projects.slice(0, 2)
+  const rightProjects = projects.slice(2, 4)
 
-export default function SelectedWorkSection() {
   return (
     <section className="bg-[#fafafa] px-4 py-12 lg:px-8 lg:py-20">
 
@@ -140,12 +128,12 @@ export default function SelectedWorkSection() {
             <p className="leading-[0.86]">Work</p>
           </div>
           <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm">
-            004
+            {String(projects.length).padStart(3, '0')}
           </p>
         </div>
       </div>
 
-      {/* Desktop header: Selected Work + 004 on left, [ portfolio ] rotated far right */}
+      {/* Desktop header */}
       <div className="hidden lg:flex items-start justify-between mb-[61px]">
         <div className="flex gap-[10px] items-start uppercase whitespace-nowrap">
           <div className="font-sans font-light leading-none text-black text-[96px] tracking-[-7.68px]">
@@ -153,7 +141,7 @@ export default function SelectedWorkSection() {
             <p className="leading-[0.86]">Work</p>
           </div>
           <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm pt-2">
-            004
+            {String(projects.length).padStart(3, '0')}
           </p>
         </div>
         <div className="h-[110px] w-[15px] flex items-center justify-center">
@@ -167,25 +155,23 @@ export default function SelectedWorkSection() {
 
       {/* Mobile: single column */}
       <div className="lg:hidden flex flex-col gap-6">
-        {PROJECTS.map((p) => (
-          <ProjectCard key={p.title} {...p} />
+        {projects.map((item, i) => (
+          <ProjectCard key={item._id} item={item} index={i} />
         ))}
         <CtaBox />
       </div>
 
-      {/* Desktop: staggered two-column — right col offset 240px down.
-          Left col self-stretch + justify-between fills the row height and
-          distributes items the same way Figma's justify-between does. */}
+      {/* Desktop: staggered two-column */}
       <div className="hidden lg:flex gap-6 items-end">
         <div className="flex-1 self-stretch flex flex-col justify-between">
-          {leftProjects.map((p) => (
-            <ProjectCard key={p.title} {...p} />
+          {leftProjects.map((item, i) => (
+            <ProjectCard key={item._id} item={item} index={i} />
           ))}
           <CtaBox />
         </div>
         <div className="flex-1 flex flex-col gap-[117px] pt-[240px]">
-          {rightProjects.map((p) => (
-            <ProjectCard key={p.title} {...p} />
+          {rightProjects.map((item, i) => (
+            <ProjectCard key={item._id} item={item} index={i + 2} />
           ))}
         </div>
       </div>
