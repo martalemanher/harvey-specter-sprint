@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 const IMG_PHOTO = "https://www.figma.com/api/mcp/asset/42092bab-2b39-4b62-9717-1da3fe33abf8";
 
 // L-shaped bracket, top-left (┌) orientation — rotate for other corners
@@ -16,8 +20,39 @@ function CornerBracket() {
 }
 
 export default function AboutSection() {
+  const photoRef = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const el = photoRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-[#fafafa] px-4 py-12 lg:px-8 lg:py-20">
+    <section data-nav-theme="light" className="bg-[#fafafa] px-4 py-12 lg:px-8 lg:py-20">
+
+      <style>{`
+        @keyframes curtain-right {
+          from { transform: translateX(0%); }
+          to   { transform: translateX(100%); }
+        }
+        .curtain-reveal {
+          animation: curtain-right 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+      `}</style>
 
       {/* Mobile-only: 002 + [ About ] stack */}
       <div className="lg:hidden flex flex-col gap-5 mb-5">
@@ -77,11 +112,18 @@ export default function AboutSection() {
             <p className="hidden lg:block font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm uppercase">
               002
             </p>
-            <div className="relative w-full overflow-hidden aspect-[436/614] lg:w-[436px] lg:h-[614px] lg:aspect-auto">
+            <div
+              ref={photoRef}
+              className="relative w-full overflow-hidden aspect-[436/614] lg:w-[436px] lg:h-[614px] lg:aspect-auto"
+            >
               <img
                 alt="Harvey Specter portrait"
                 className="absolute h-[101.39%] left-[-0.71%] max-w-none top-[-0.69%] w-[101.42%]"
                 src={IMG_PHOTO}
+              />
+              {/* Black curtain overlay — slides out to the right on reveal */}
+              <div
+                className={`absolute inset-0 z-10 bg-black${revealed ? " curtain-reveal" : ""}`}
               />
             </div>
           </div>

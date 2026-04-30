@@ -1,3 +1,9 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const SCROLL_PARALLAX = 100; // px — same for every card
+
 const CARDS = [
   {
     logo: "https://www.figma.com/api/mcp/asset/8fa2effc-8d4a-4a42-8227-f12c7a9f48b1",
@@ -6,14 +12,17 @@ const CARDS = [
     name: "Marko Stojković",
     desktop: { left: 102, top: 142, rotate: -6.85 },
     mobileRotate: -3.5,
+    depth: 0.025,
   },
   {
     logo: "https://www.figma.com/api/mcp/asset/580f3677-5fe8-4e07-852d-324413ebbab9",
     logoW: 138, logoH: 19,
     quote: "Professional, precise, and incredibly fast at handling complex product visualizations and templates.",
     name: "Lukas Weber",
-    desktop: { left: 676, top: 272, rotate: 2.9 },
+    // right-anchored so it never clips on narrower viewports (1440 - 676 - 353 = 411)
+    desktop: { right: 411, top: 272, rotate: 2.9 },
     mobileRotate: 2,
+    depth: 0.045,
   },
   {
     logo: "https://www.figma.com/api/mcp/asset/3a5c1210-6082-49ca-8bf5-6e576662a38a",
@@ -22,14 +31,17 @@ const CARDS = [
     name: "Sarah Jenkins",
     desktop: { left: 305, top: 553, rotate: 2.23 },
     mobileRotate: -2,
+    depth: 0.035,
   },
   {
     logo: "https://www.figma.com/api/mcp/asset/8346f8cf-c700-4978-8768-cdea7c94d8cb",
     logoW: 81, logoH: 36,
     quote: "An incredibly versatile designer who delivers consistent quality across a wide range of styles and formats.",
     name: "Sofia Martínez",
-    desktop: { left: 987, top: 546, rotate: -4.15 },
+    // right-anchored so it never clips on narrower viewports (1440 - 987 - 353 = 100)
+    desktop: { right: 100, top: 546, rotate: -4.15 },
     mobileRotate: 3,
+    depth: 0.055,
   },
 ];
 
@@ -55,11 +67,150 @@ function TestimonialCard({
   );
 }
 
+function MobileSlider() {
+  const [index, setIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) setIndex((i) => Math.min(i + 1, CARDS.length - 1));
+      else setIndex((i) => Math.max(i - 1, 0));
+    }
+    touchStartX.current = null;
+  }
+
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <div
+        className="w-full overflow-hidden py-10"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div
+          className="flex transition-transform duration-300 ease-in-out"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {CARDS.map((card) => (
+            <div
+              key={card.name}
+              className="shrink-0 w-full flex justify-center"
+              style={{ transform: `rotate(${card.mobileRotate}deg)` }}
+            >
+              <TestimonialCard {...card} width={260} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        {CARDS.map((card, i) => (
+          <button
+            key={card.name}
+            onClick={() => setIndex(i)}
+            aria-label={`Go to testimonial ${i + 1}`}
+            className={`w-2 h-2 rounded-full transition-colors ${
+              i === index ? "bg-black" : "bg-[#ccc]"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DesktopParallax() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [scrollRatio, setScrollRatio] = useState(1);
+
+  useEffect(() => {
+    let rafId: number;
+
+    function onScroll() {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const { top } = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const progress = Math.max(0, Math.min(1, (vh - top) / vh));
+        setScrollRatio(1 - progress);
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  function handleMouseMove(e: React.MouseEvent) {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setMouse({
+      x: e.clientX - (rect.left + rect.width / 2),
+      y: e.clientY - (rect.top + rect.height / 2),
+    });
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className="hidden lg:block relative overflow-hidden min-h-[900px] px-8 py-[120px]"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setMouse({ x: 0, y: 0 })}
+    >
+      <p className="font-sans font-medium text-[198px] tracking-[-13.86px] capitalize text-center text-black leading-[1.1]">
+        Testimonials
+      </p>
+
+      {CARDS.map((card) => {
+        const { top, rotate, ...posX } = card.desktop;
+        const scrollTy = scrollRatio * SCROLL_PARALLAX;
+        const mouseTx = mouse.x * card.depth;
+        const mouseTy = mouse.y * card.depth;
+        return (
+          // Outer: scroll parallax — slow, smooth rise (same distance for every card)
+          <div
+            key={card.name}
+            className="absolute"
+            style={{
+              ...posX,
+              top,
+              transform: `translateY(${scrollTy}px)`,
+              transition: "transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              willChange: "transform",
+            }}
+          >
+            {/* Inner: mouse parallax + rotation — snappy */}
+            <div
+              style={{
+                transform: `translate(${mouseTx}px, ${mouseTy}px) rotate(${rotate}deg)`,
+                transition: "transform 0.15s ease-out",
+              }}
+            >
+              <TestimonialCard {...card} width={353} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function TestimonialsSection() {
   return (
-    <section className="bg-[#fafafa]">
+    <section data-nav-theme="light" className="bg-[#fafafa]">
 
-      {/* ── Mobile: title + horizontal scroll strip ── */}
+      {/* ── Mobile: title + slider ── */}
       <div className="lg:hidden px-4 py-16 flex flex-col gap-8">
         <p
           className="font-sans font-medium text-[64px] tracking-[-4.48px] capitalize text-center text-black"
@@ -67,46 +218,11 @@ export default function TestimonialsSection() {
         >
           Testimonials
         </p>
-        {/* Bleed to the left edge so the fan feels full-width */}
-        <div className="overflow-x-auto -mx-4 px-4">
-          <div className="flex pb-4">
-            {CARDS.map((card, i) => (
-              <div
-                key={card.name}
-                className="shrink-0 relative"
-                style={{
-                  marginRight: i < CARDS.length - 1 ? -10 : 0,
-                  transform: `rotate(${card.mobileRotate}deg)`,
-                  zIndex: i,
-                }}
-              >
-                <TestimonialCard {...card} width={260} />
-              </div>
-            ))}
-          </div>
-        </div>
+        <MobileSlider />
       </div>
 
       {/* ── Desktop: large title with absolute cards floating around it ── */}
-      <div className="hidden lg:block relative overflow-hidden min-h-[900px] px-8 py-[120px]">
-        {/* Title — in-flow, centered; absolute cards layer on top */}
-        <p className="font-sans font-medium text-[198px] tracking-[-13.86px] capitalize text-center text-black leading-[1.1]">
-          Testimonials
-        </p>
-        {CARDS.map((card) => (
-          <div
-            key={card.name}
-            className="absolute"
-            style={{
-              left: card.desktop.left,
-              top: card.desktop.top,
-              transform: `rotate(${card.desktop.rotate}deg)`,
-            }}
-          >
-            <TestimonialCard {...card} width={353} />
-          </div>
-        ))}
-      </div>
+      <DesktopParallax />
 
     </section>
   );

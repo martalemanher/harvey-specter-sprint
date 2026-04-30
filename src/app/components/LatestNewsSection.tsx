@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const imgArticle1 = "https://www.figma.com/api/mcp/asset/7f9bfdc5-9f98-4037-a496-fa50ff62643f";
 const imgArticle2 = "https://www.figma.com/api/mcp/asset/bb5cce38-be8d-4e75-9c90-b26ff37331b7";
 const imgArticle3 = "https://www.figma.com/api/mcp/asset/35999815-7da2-46b6-a0d2-a736fb4b4d47";
@@ -27,7 +31,7 @@ function ReadMoreLink() {
       <span className="font-sans font-medium text-[14px] text-black tracking-[-0.56px] whitespace-nowrap leading-normal">
         Read more
       </span>
-      <div className="-rotate-90 size-[18px] shrink-0">
+      <div className="-rotate-90 size-[18px] shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
         <img alt="" src={imgArrow} className="size-full block" />
       </div>
     </div>
@@ -44,9 +48,13 @@ function ArticleCard({
   imageHeightClass: string;
 }) {
   return (
-    <div className="flex flex-col gap-4">
-      <div className={`relative w-full ${imageHeightClass}`}>
-        <img alt="" src={image} className="absolute inset-0 size-full object-cover" />
+    <div className="group flex flex-col gap-4 transition-transform duration-300 ease-out hover:-translate-y-1">
+      <div className={`relative w-full overflow-hidden ${imageHeightClass}`}>
+        <img
+          alt=""
+          src={image}
+          className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        />
       </div>
       <p className="font-sans font-normal leading-[1.3] text-[#1f1f1f] text-[14px] tracking-[-0.56px]">
         {caption}
@@ -56,11 +64,76 @@ function ArticleCard({
   );
 }
 
+function MobileSlider() {
+  const [current, setCurrent] = useState(0);
+
+  const prev = () => setCurrent((c) => (c - 1 + ARTICLES.length) % ARTICLES.length);
+  const next = () => setCurrent((c) => (c + 1) % ARTICLES.length);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-300 ease-in-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {ARTICLES.map((article, i) => (
+            <div key={i} className="w-full shrink-0">
+              <ArticleCard
+                image={article.image}
+                caption={article.caption}
+                imageHeightClass="h-[398px]"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="flex items-center justify-between">
+        <div className="flex gap-2">
+          {ARTICLES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`h-[2px] transition-all duration-300 ${
+                i === current ? "w-8 bg-black" : "w-4 bg-black/30"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            onClick={prev}
+            className="size-9 border border-black flex items-center justify-center"
+            aria-label="Previous"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3L5 8L10 13" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button
+            onClick={next}
+            className="size-9 border border-black flex items-center justify-center"
+            aria-label="Next"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3L11 8L6 13" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function LatestNewsSection() {
   return (
-    <section className="bg-[#f3f3f3]">
+    <section data-nav-theme="light" className="bg-[#f3f3f3]">
 
-      {/* ── Mobile: title + horizontal scroll ── */}
+      {/* ── Mobile: title + slider ── */}
       <div className="lg:hidden px-4 py-16 flex flex-col gap-8">
         <p
           className="font-sans font-light text-[32px] text-black tracking-[-2.56px] uppercase"
@@ -68,19 +141,7 @@ export default function LatestNewsSection() {
         >
           Keep up with my latest news &amp; achievements
         </p>
-        <div className="-mx-4 overflow-x-auto">
-          <div className="flex gap-4 px-4 pb-4">
-            {ARTICLES.map((article, i) => (
-              <div key={i} className="shrink-0 w-[300px]">
-                <ArticleCard
-                  image={article.image}
-                  caption={article.caption}
-                  imageHeightClass="h-[398px]"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <MobileSlider />
       </div>
 
       {/* ── Desktop: rotated title + 3 staggered columns ── */}

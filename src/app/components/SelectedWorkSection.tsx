@@ -52,26 +52,29 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
     : null
 
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="group flex flex-col gap-[10px] cursor-pointer">
       <div className={`relative overflow-hidden flex items-end pb-4 pl-4 ${cardClass} bg-[#e5e5e5]`}>
         {imgSrc && (
           <img
             alt={item.coverImage?.alt ?? item.title}
-            className="absolute inset-0 max-w-none object-cover size-full pointer-events-none"
+            className="absolute inset-0 max-w-none object-cover size-full pointer-events-none transition-transform duration-500 ease-out group-hover:scale-105"
             src={imgSrc}
           />
         )}
-        <div className="relative flex gap-3">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500 ease-out" />
+        <div className="relative flex gap-3 transition-transform duration-500 ease-out group-hover:-translate-y-1">
           {item.tags?.map((tag: string) => (
             <Tag key={tag} label={tag} />
           ))}
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <p className="font-sans font-black leading-[1.1] text-black uppercase tracking-[-0.96px] text-[24px] lg:text-[36px] lg:tracking-[-1.44px]">
+        <p className="font-sans font-black leading-[1.1] text-black uppercase tracking-[-0.96px] text-[24px] lg:text-[36px] lg:tracking-[-1.44px] transition-transform duration-300 ease-out group-hover:translate-x-1">
           {item.title}
         </p>
-        <ArrowUpRight />
+        <div className="transition-transform duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1">
+          <ArrowUpRight />
+        </div>
       </div>
     </div>
   );
@@ -115,7 +118,7 @@ export default async function SelectedWorkSection() {
   const rightProjects = projects.slice(2, 4)
 
   return (
-    <section className="bg-[#fafafa] px-4 py-12 lg:px-8 lg:py-20">
+    <section data-nav-theme="light" className="bg-[#fafafa] px-4 py-12 lg:px-8 lg:py-20">
 
       {/* Mobile header: [ portfolio ] above, Selected Work + 004 in a row */}
       <div className="lg:hidden flex flex-col gap-4 mb-8 uppercase">

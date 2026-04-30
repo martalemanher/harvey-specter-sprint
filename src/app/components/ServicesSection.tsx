@@ -31,7 +31,7 @@ const SERVICES = [
 
 export default function ServicesSection() {
   return (
-    <section className="bg-black flex flex-col gap-8 px-4 py-12 lg:gap-12 lg:px-8 lg:py-20">
+    <section data-nav-theme="dark" className="bg-black flex flex-col gap-8 px-4 py-12 lg:gap-12 lg:px-8 lg:py-20">
 
       {/* [ services ] label */}
       <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-white text-sm uppercase whitespace-nowrap">
@@ -47,19 +47,19 @@ export default function ServicesSection() {
       {/* Service rows */}
       <div className="flex flex-col gap-12">
         {SERVICES.map((service) => (
-          <div key={service.number} className="flex flex-col gap-[9px]">
+          <div key={service.number} className="group flex flex-col gap-[9px] cursor-pointer -mx-4 px-4 py-3 lg:-mx-8 lg:px-8 rounded-sm transition-colors duration-300 hover:bg-white/[0.04]">
 
             {/* Number label + divider */}
             <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-white text-sm uppercase">
               {service.number}
             </p>
-            <div className="border-t border-white/30 w-full" />
+            <div className="border-t border-white/30 w-full transition-colors duration-300 group-hover:border-white/60" />
 
             {/* Body: stacked on mobile, split row on desktop */}
             <div className="flex flex-col gap-4 pt-2 lg:flex-row lg:items-start lg:justify-between">
 
               {/* Title */}
-              <p className="font-sans font-bold italic leading-[1.1] text-[36px] text-white tracking-[-1.44px] uppercase whitespace-nowrap">
+              <p className="font-sans font-bold italic leading-[1.1] text-[36px] text-white tracking-[-1.44px] uppercase whitespace-nowrap transition-transform duration-300 group-hover:translate-x-1">
                 {service.title}
               </p>
 
@@ -68,10 +68,10 @@ export default function ServicesSection() {
                 <p className="font-sans font-normal leading-[1.3] text-[14px] text-white tracking-[-0.56px] lg:w-[393px]">
                   {service.description}
                 </p>
-                <div className="relative size-[151px] shrink-0 overflow-hidden">
+                <div className="relative shrink-0 size-[151px] overflow-hidden">
                   <img
                     alt=""
-                    className="absolute inset-0 max-w-none object-cover size-full"
+                    className="absolute inset-0 max-w-none object-cover size-full transition-transform duration-500 ease-out group-hover:scale-110"
                     src={service.img}
                   />
                 </div>

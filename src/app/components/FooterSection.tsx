@@ -2,7 +2,7 @@ const SOCIAL_LINKS = ["Facebook", "Instagram", "X.com", "Linkedin"];
 
 export default function FooterSection() {
   return (
-    <footer className="bg-black text-white">
+    <footer data-nav-theme="dark" className="bg-black text-white">
 
       {/* ── Mobile ── */}
       <div className="lg:hidden flex flex-col gap-12 pt-12 px-4">
@@ -98,8 +98,8 @@ export default function FooterSection() {
             <p
               className="absolute left-[5px] font-sans font-semibold capitalize text-white whitespace-nowrap"
               style={{
-                fontSize: "290px",
-                letterSpacing: "-17.4px",
+                fontSize: "min(290px, 20vw)",
+                letterSpacing: "-0.06em",
                 lineHeight: 0.8,
                 top: "calc(50% + 6.5px)",
                 transform: "translateY(-50%)",
