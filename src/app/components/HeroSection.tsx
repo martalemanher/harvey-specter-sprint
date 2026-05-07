@@ -4,10 +4,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const IMG_HERO_DESKTOP =
-  "https://www.figma.com/api/mcp/asset/77e0d1da-533b-4b67-b100-6f657268ca62";
-const IMG_HERO_MOBILE =
-  "https://www.figma.com/api/mcp/asset/797a3fe2-3d19-431d-9f4a-e79a09ce5377";
+const IMG_HERO_DESKTOP = "/hero-bg.png";
+const IMG_HERO_MOBILE = "/hero-bg.png";
 
 export default function HeroSection() {
   // Parallax refs

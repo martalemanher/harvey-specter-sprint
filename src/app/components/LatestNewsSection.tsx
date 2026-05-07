@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-const imgArticle1 = "https://www.figma.com/api/mcp/asset/7f9bfdc5-9f98-4037-a496-fa50ff62643f";
-const imgArticle2 = "https://www.figma.com/api/mcp/asset/bb5cce38-be8d-4e75-9c90-b26ff37331b7";
-const imgArticle3 = "https://www.figma.com/api/mcp/asset/35999815-7da2-46b6-a0d2-a736fb4b4d47";
-const imgArrow = "https://www.figma.com/api/mcp/asset/4016b68a-addf-44f3-b3ee-cde9261bc463";
+const imgArticle1 = "/news-1.png";
+const imgArticle2 = "/news-2.png";
+const imgArticle3 = "/news-3.png";
+const imgArrow = "/news-arrow.png";
 
 const ARTICLES = [
   {

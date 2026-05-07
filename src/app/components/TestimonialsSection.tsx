@@ -6,7 +6,7 @@ const SCROLL_PARALLAX = 100; // px — same for every card
 
 const CARDS = [
   {
-    logo: "https://www.figma.com/api/mcp/asset/8fa2effc-8d4a-4a42-8227-f12c7a9f48b1",
+    logo: "/logo-2.png",
     logoW: 143, logoH: 19,
     quote: "A brilliant creative partner who transformed our vision into a unique, high-impact brand identity. Their ability to craft everything from custom mascots to polished logos is truly impressive.",
     name: "Marko Stojković",
@@ -15,7 +15,7 @@ const CARDS = [
     depth: 0.025,
   },
   {
-    logo: "https://www.figma.com/api/mcp/asset/580f3677-5fe8-4e07-852d-324413ebbab9",
+    logo: "/logo-1.png",
     logoW: 138, logoH: 19,
     quote: "Professional, precise, and incredibly fast at handling complex product visualizations and templates.",
     name: "Lukas Weber",
@@ -25,7 +25,7 @@ const CARDS = [
     depth: 0.045,
   },
   {
-    logo: "https://www.figma.com/api/mcp/asset/3a5c1210-6082-49ca-8bf5-6e576662a38a",
+    logo: "/logo-3.png",
     logoW: 109, logoH: 31,
     quote: "A strategic partner who balances stunning aesthetics with high-performance UX for complex platforms. They don't just make things look good; they solve business problems through visual clarity.",
     name: "Sarah Jenkins",
@@ -34,7 +34,7 @@ const CARDS = [
     depth: 0.035,
   },
   {
-    logo: "https://www.figma.com/api/mcp/asset/8346f8cf-c700-4978-8768-cdea7c94d8cb",
+    logo: "/logo-4.png",
     logoW: 81, logoH: 36,
     quote: "An incredibly versatile designer who delivers consistent quality across a wide range of styles and formats.",
     name: "Sofia Martínez",

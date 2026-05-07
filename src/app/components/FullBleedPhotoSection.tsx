@@ -1,5 +1,5 @@
-const IMG_DESKTOP = "https://www.figma.com/api/mcp/asset/104aa9e8-de4e-4dac-9647-6acc54d21024";
-const IMG_MOBILE  = "https://www.figma.com/api/mcp/asset/60d79ff8-b9c2-4027-930b-768ec90cd5f7";
+const IMG_DESKTOP = "/fullbleed-bg.png";
+const IMG_MOBILE  = "/fullbleed-bg.png";
 
 export default function FullBleedPhotoSection() {
   return (

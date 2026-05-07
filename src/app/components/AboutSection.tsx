@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const IMG_PHOTO = "https://www.figma.com/api/mcp/asset/42092bab-2b39-4b62-9717-1da3fe33abf8";
+const IMG_PHOTO = "/about-photo.png";
 
 // L-shaped bracket, top-left (┌) orientation — rotate for other corners
 function CornerBracket() {

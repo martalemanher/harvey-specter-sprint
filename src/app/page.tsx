@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main className="bg-[#fafafa]">
       {/* z-10 wrapper ensures content slides above the sticky footer as you scroll */}
-      <div className="relative z-10">
+      <div className="relative z-10 bg-[#fafafa]">
         <Navbar />
         <HeroSection />
         <AboutIntroSection />
