@@ -1,48 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 
-const SCROLL_PARALLAX = 100; // px — same for every card
+type Props = { dict: Dictionary["testimonials"] };
 
-const CARDS = [
-  {
-    logo: "/logo-2.png",
-    logoW: 143, logoH: 19,
-    quote: "A brilliant creative partner who transformed our vision into a unique, high-impact brand identity. Their ability to craft everything from custom mascots to polished logos is truly impressive.",
-    name: "Marko Stojković",
-    desktop: { left: 102, top: 142, rotate: -6.85 },
-    mobileRotate: -3.5,
-    depth: 0.025,
-  },
-  {
-    logo: "/logo-1.png",
-    logoW: 138, logoH: 19,
-    quote: "Professional, precise, and incredibly fast at handling complex product visualizations and templates.",
-    name: "Lukas Weber",
-    // right-anchored so it never clips on narrower viewports (1440 - 676 - 353 = 411)
-    desktop: { right: 411, top: 272, rotate: 2.9 },
-    mobileRotate: 2,
-    depth: 0.045,
-  },
-  {
-    logo: "/logo-3.png",
-    logoW: 109, logoH: 31,
-    quote: "A strategic partner who balances stunning aesthetics with high-performance UX for complex platforms. They don't just make things look good; they solve business problems through visual clarity.",
-    name: "Sarah Jenkins",
-    desktop: { left: 305, top: 553, rotate: 2.23 },
-    mobileRotate: -2,
-    depth: 0.035,
-  },
-  {
-    logo: "/logo-4.png",
-    logoW: 81, logoH: 36,
-    quote: "An incredibly versatile designer who delivers consistent quality across a wide range of styles and formats.",
-    name: "Sofia Martínez",
-    // right-anchored so it never clips on narrower viewports (1440 - 987 - 353 = 100)
-    desktop: { right: 100, top: 546, rotate: -4.15 },
-    mobileRotate: 3,
-    depth: 0.055,
-  },
+const SCROLL_PARALLAX = 100;
+
+const CARD_LAYOUT = [
+  { logo: "/logo-2.png", logoW: 143, logoH: 19, desktop: { left: 102,  top: 142, rotate: -6.85 }, mobileRotate: -3.5, depth: 0.025 },
+  { logo: "/logo-1.png", logoW: 138, logoH: 19, desktop: { right: 411, top: 272, rotate:  2.9  }, mobileRotate:  2,   depth: 0.045 },
+  { logo: "/logo-3.png", logoW: 109, logoH: 31, desktop: { left: 305,  top: 553, rotate:  2.23 }, mobileRotate: -2,   depth: 0.035 },
+  { logo: "/logo-4.png", logoW: 81,  logoH: 36, desktop: { right: 100, top: 546, rotate: -4.15 }, mobileRotate:  3,   depth: 0.055 },
 ];
 
 function TestimonialCard({
@@ -67,19 +36,18 @@ function TestimonialCard({
   );
 }
 
-function MobileSlider() {
+function MobileSlider({ dict }: { dict: Props['dict'] }) {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
   function onTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
   }
-
   function onTouchEnd(e: React.TouchEvent) {
     if (touchStartX.current === null) return;
     const delta = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(delta) > 40) {
-      if (delta > 0) setIndex((i) => Math.min(i + 1, CARDS.length - 1));
+      if (delta > 0) setIndex((i) => Math.min(i + 1, CARD_LAYOUT.length - 1));
       else setIndex((i) => Math.max(i - 1, 0));
     }
     touchStartX.current = null;
@@ -87,36 +55,34 @@ function MobileSlider() {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <div
-        className="w-full overflow-hidden py-10"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
+      <div className="w-full overflow-hidden py-10" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <div
           className="flex transition-transform duration-300 ease-in-out"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
-          {CARDS.map((card) => (
+          {CARD_LAYOUT.map((layout, i) => (
             <div
-              key={card.name}
+              key={i}
               className="shrink-0 w-full flex justify-center"
-              style={{ transform: `rotate(${card.mobileRotate}deg)` }}
+              style={{ transform: `rotate(${layout.mobileRotate}deg)` }}
             >
-              <TestimonialCard {...card} width={260} />
+              <TestimonialCard
+                {...layout}
+                quote={dict.cards[i]?.quote ?? ''}
+                name={dict.cards[i]?.name ?? ''}
+                width={260}
+              />
             </div>
           ))}
         </div>
       </div>
-
       <div className="flex gap-2">
-        {CARDS.map((card, i) => (
+        {CARD_LAYOUT.map((_, i) => (
           <button
-            key={card.name}
+            key={i}
             onClick={() => setIndex(i)}
             aria-label={`Go to testimonial ${i + 1}`}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              i === index ? "bg-black" : "bg-[#ccc]"
-            }`}
+            className={`w-2 h-2 rounded-full transition-colors ${i === index ? "bg-black" : "bg-[#ccc]"}`}
           />
         ))}
       </div>
@@ -124,14 +90,13 @@ function MobileSlider() {
   );
 }
 
-function DesktopParallax() {
+function DesktopParallax({ dict }: { dict: Props['dict'] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [scrollRatio, setScrollRatio] = useState(1);
 
   useEffect(() => {
     let rafId: number;
-
     function onScroll() {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
@@ -143,13 +108,9 @@ function DesktopParallax() {
         setScrollRatio(1 - progress);
       });
     }
-
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(rafId);
-    };
+    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(rafId); };
   }, []);
 
   function handleMouseMove(e: React.MouseEvent) {
@@ -169,18 +130,16 @@ function DesktopParallax() {
       onMouseLeave={() => setMouse({ x: 0, y: 0 })}
     >
       <p className="font-sans font-medium text-[198px] tracking-[-13.86px] capitalize text-center text-black leading-[1.1]">
-        Testimonials
+        {dict.title}
       </p>
-
-      {CARDS.map((card) => {
-        const { top, rotate, ...posX } = card.desktop;
+      {CARD_LAYOUT.map((layout, i) => {
+        const { top, rotate, ...posX } = layout.desktop;
         const scrollTy = scrollRatio * SCROLL_PARALLAX;
-        const mouseTx = mouse.x * card.depth;
-        const mouseTy = mouse.y * card.depth;
+        const mouseTx = mouse.x * layout.depth;
+        const mouseTy = mouse.y * layout.depth;
         return (
-          // Outer: scroll parallax — slow, smooth rise (same distance for every card)
           <div
-            key={card.name}
+            key={i}
             className="absolute"
             style={{
               ...posX,
@@ -190,14 +149,18 @@ function DesktopParallax() {
               willChange: "transform",
             }}
           >
-            {/* Inner: mouse parallax + rotation — snappy */}
             <div
               style={{
                 transform: `translate(${mouseTx}px, ${mouseTy}px) rotate(${rotate}deg)`,
                 transition: "transform 0.15s ease-out",
               }}
             >
-              <TestimonialCard {...card} width={353} />
+              <TestimonialCard
+                {...layout}
+                quote={dict.cards[i]?.quote ?? ''}
+                name={dict.cards[i]?.name ?? ''}
+                width={353}
+              />
             </div>
           </div>
         );
@@ -206,24 +169,19 @@ function DesktopParallax() {
   );
 }
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ dict }: Props) {
   return (
     <section data-nav-theme="light" className="bg-[#fafafa]">
-
-      {/* ── Mobile: title + slider ── */}
       <div className="lg:hidden px-4 py-16 flex flex-col gap-8">
         <p
           className="font-sans font-medium text-[64px] tracking-[-4.48px] capitalize text-center text-black"
           style={{ lineHeight: 0.8 }}
         >
-          Testimonials
+          {dict.title}
         </p>
-        <MobileSlider />
+        <MobileSlider dict={dict} />
       </div>
-
-      {/* ── Desktop: large title with absolute cards floating around it ── */}
-      <DesktopParallax />
-
+      <DesktopParallax dict={dict} />
     </section>
   );
 }

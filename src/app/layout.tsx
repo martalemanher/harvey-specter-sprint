@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const inter = Inter({
@@ -25,14 +26,17 @@ export const metadata: Metadata = {
   description: "Creative Director & Photographer born and raised on the south side of Chicago.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const heads = await headers();
+  const lang = heads.get("x-locale") ?? "en";
+
   return (
     <html
-      lang="en"
+      lang={lang}
       className={`${inter.variable} ${playfairDisplay.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

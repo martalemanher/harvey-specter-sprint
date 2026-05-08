@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "title": "Harvey Specter | H.Studio",
+    "description": "Director Creativo y Fotógrafo nacido y criado en el south side de Chicago."
+  },
+  "nav": {
+    "logo": "H.Studio",
+    "links": [
+      { "label": "Sobre mí",   "anchor": "about" },
+      { "label": "Servicios",  "anchor": "services" },
+      { "label": "Proyectos",  "anchor": "projects" },
+      { "label": "Noticias",   "anchor": "news" },
+      { "label": "Contacto",   "anchor": "contact" }
+    ],
+    "cta": "Hablemos"
+  },
+  "hero": {
+    "greeting": "[ Hola, soy ]",
+    "firstName": "Harvey",
+    "lastName": "Specter",
+    "descriptionPre": "H.Studio es un estudio creativo de ",
+    "descriptionService": "servicio completo",
+    "descriptionMid": " que crea hermosas experiencias y productos digitales. Somos un grupo de diseño y arte ",
+    "descriptionAward": "premiado",
+    "descriptionPost": ", especializado en branding, diseño web e ingeniería.",
+    "cta": "Hablemos"
+  },
+  "aboutIntro": {
+    "yearsTag": "[ 8+ años de experiencia ]",
+    "titleLine1": "Director creativo   /",
+    "titleLine2": "Fotógrafo",
+    "line3Pre": "Nacido ",
+    "line3Connector": "y",
+    "line3Post": " criado",
+    "line4": "en el south side",
+    "line5": "de chicago.",
+    "freelancerTag": "[ freelancer creativo ]"
+  },
+  "about": {
+    "tag": "[ Sobre mí ]",
+    "body": "Párrafo uno de presentación. Aquí te presentas — tu trayectoria, tu pasión por tu oficio y lo que te impulsa creativamente. Dos o tres frases funcionan mejor. Párrafo dos de presentación. Aquí puedes describir tu enfoque técnico, cómo colaboras con los clientes o qué diferencia tu trabajo del de otros profesionales del sector.",
+    "imageAlt": "Retrato de Harvey Specter"
+  },
+  "services": {
+    "tag": "[ servicios ]",
+    "deliverables": "Servicios",
+    "items": [
+      {
+        "title": "Identidad de Marca",
+        "description": "Descripción del servicio. Explica el valor que ofreces y los resultados que los clientes pueden esperar. Dos o tres frases son suficientes."
+      },
+      {
+        "title": "Diseño y Desarrollo Web",
+        "description": "Descripción del servicio. Explica el valor que ofreces y los resultados que los clientes pueden esperar. Dos o tres frases son suficientes."
+      },
+      {
+        "title": "Marketing",
+        "description": "Descripción del servicio. Explica el valor que ofreces y los resultados que los clientes pueden esperar. Dos o tres frases son suficientes."
+      },
+      {
+        "title": "Fotografía",
+        "description": "Descripción del servicio. Explica el valor que ofreces y los resultados que los clientes pueden esperar. Dos o tres frases son suficientes."
+      }
+    ]
+  },
+  "selectedWork": {
+    "tag": "[ portafolio ]",
+    "title1": "Trabajos",
+    "title2": "Seleccionados",
+    "description": "Descubre cómo mi creatividad transforma ideas en experiencias digitales impactantes — programa una llamada conmigo para comenzar.",
+    "cta": "Hablemos"
+  },
+  "testimonials": {
+    "title": "Testimonios",
+    "cards": [
+      {
+        "quote": "Un socio creativo brillante que transformó nuestra visión en una identidad de marca única y de alto impacto. Su capacidad para crear desde mascotas personalizadas hasta logotipos pulidos es verdaderamente impresionante.",
+        "name": "Marko Stojković"
+      },
+      {
+        "quote": "Profesional, preciso e increíblemente ágil al gestionar visualizaciones de producto y plantillas complejas.",
+        "name": "Lukas Weber"
+      },
+      {
+        "quote": "Un socio estratégico que equilibra estética impactante con UX de alto rendimiento para plataformas complejas. No solo hacen que las cosas se vean bien; resuelven problemas de negocio a través de la claridad visual.",
+        "name": "Sarah Jenkins"
+      },
+      {
+        "quote": "Un diseñador increíblemente versátil que ofrece calidad constante en una amplia variedad de estilos y formatos.",
+        "name": "Sofia Martínez"
+      }
+    ]
+  },
+  "latestNews": {
+    "title": "Últimas noticias y logros",
+    "readMore": "Leer más",
+    "articles": [
+      { "caption": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+      { "caption": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+      { "caption": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." }
+    ]
+  },
+  "footer": {
+    "cta": "¿Tienes un proyecto en mente?",
+    "ctaButton": "Hablemos",
+    "licences": "Licencias",
+    "privacy": "Política de privacidad",
+    "credit": "[ Coded By Claude ]",
+    "logo": "H.Studio"
+  }
+}
