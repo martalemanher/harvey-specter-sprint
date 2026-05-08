@@ -1,7 +1,12 @@
-import { getPortfolioItems, type PortfolioItem } from '@/sanity/client'
+import type { PortfolioItem } from '@/sanity/client'
 import { urlFor } from '@/sanity/image'
+import type { Dictionary } from '@/app/[lang]/dictionaries'
 
-// Heights follow the Figma stagger: positions 0 & 3 are tall, 1 & 2 are standard
+type Props = {
+  dict: Dictionary['selectedWork']
+  items: PortfolioItem[]
+}
+
 const CARD_CLASSES = [
   'h-[390px] lg:h-[744px]',
   'h-[390px] lg:h-[699px]',
@@ -80,7 +85,7 @@ function ProjectCard({ item, index }: { item: PortfolioItem; index: number }) {
   );
 }
 
-function CtaBox() {
+function CtaBox({ dict }: { dict: Props['dict'] }) {
   return (
     <div className="flex gap-3 items-stretch w-full lg:w-[465px]">
       <div className="flex flex-col justify-between shrink-0 w-6">
@@ -91,12 +96,11 @@ function CtaBox() {
       </div>
       <div className="flex flex-col gap-[10px] items-start justify-center py-3 flex-1 min-w-0">
         <p className="font-sans font-normal italic leading-[1.3] text-[#1f1f1f] text-[14px] tracking-[-0.56px]">
-          Discover how my creativity transforms ideas into impactful digital
-          experiences — schedule a call with me to get started.
+          {dict.description}
         </p>
         <button className="bg-black flex items-center justify-center px-4 py-3 rounded-[24px]">
           <span className="font-sans font-medium text-[14px] text-white tracking-[-0.56px] leading-none">
-            Let&apos;s talk
+            {dict.cta}
           </span>
         </button>
       </div>
@@ -112,26 +116,25 @@ function CtaBox() {
   );
 }
 
-export default async function SelectedWorkSection() {
-  const projects = await getPortfolioItems()
-  const leftProjects = projects.slice(0, 2)
-  const rightProjects = projects.slice(2, 4)
+export default function SelectedWorkSection({ dict, items }: Props) {
+  const leftProjects = items.slice(0, 2)
+  const rightProjects = items.slice(2, 4)
 
   return (
     <section data-nav-theme="light" className="bg-[#fafafa] px-4 py-12 lg:px-8 lg:py-20">
 
-      {/* Mobile header: [ portfolio ] above, Selected Work + 004 in a row */}
+      {/* Mobile header */}
       <div className="lg:hidden flex flex-col gap-4 mb-8 uppercase">
         <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm">
-          [ portfolio ]
+          {dict.tag}
         </p>
         <div className="flex items-start justify-between">
           <div className="font-sans font-light leading-none text-black text-[32px] tracking-[-2.56px]">
-            <p className="leading-[0.86]">Selected</p>
-            <p className="leading-[0.86]">Work</p>
+            <p className="leading-[0.86]">{dict.title1}</p>
+            <p className="leading-[0.86]">{dict.title2}</p>
           </div>
           <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm">
-            {String(projects.length).padStart(3, '0')}
+            {String(items.length).padStart(3, '0')}
           </p>
         </div>
       </div>
@@ -140,17 +143,17 @@ export default async function SelectedWorkSection() {
       <div className="hidden lg:flex items-start justify-between mb-[61px]">
         <div className="flex gap-[10px] items-start uppercase whitespace-nowrap">
           <div className="font-sans font-light leading-none text-black text-[96px] tracking-[-7.68px]">
-            <p className="leading-[0.86]">Selected</p>
-            <p className="leading-[0.86]">Work</p>
+            <p className="leading-[0.86]">{dict.title1}</p>
+            <p className="leading-[0.86]">{dict.title2}</p>
           </div>
           <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm pt-2">
-            {String(projects.length).padStart(3, '0')}
+            {String(items.length).padStart(3, '0')}
           </p>
         </div>
         <div className="h-[110px] w-[15px] flex items-center justify-center">
           <div className="-rotate-90">
             <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm uppercase whitespace-nowrap">
-              [ portfolio ]
+              {dict.tag}
             </p>
           </div>
         </div>
@@ -158,10 +161,10 @@ export default async function SelectedWorkSection() {
 
       {/* Mobile: single column */}
       <div className="lg:hidden flex flex-col gap-6">
-        {projects.map((item, i) => (
+        {items.map((item, i) => (
           <ProjectCard key={item._id} item={item} index={i} />
         ))}
-        <CtaBox />
+        <CtaBox dict={dict} />
       </div>
 
       {/* Desktop: staggered two-column */}
@@ -170,7 +173,7 @@ export default async function SelectedWorkSection() {
           {leftProjects.map((item, i) => (
             <ProjectCard key={item._id} item={item} index={i} />
           ))}
-          <CtaBox />
+          <CtaBox dict={dict} />
         </div>
         <div className="flex-1 flex flex-col gap-[117px] pt-[240px]">
           {rightProjects.map((item, i) => (

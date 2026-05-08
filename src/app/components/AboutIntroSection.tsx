@@ -3,8 +3,11 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { Dictionary } from "@/app/[lang]/dictionaries";
 
-export default function AboutIntroSection() {
+type Props = { dict: Dictionary["aboutIntro"] };
+
+export default function AboutIntroSection({ dict }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const line1Ref = useRef<HTMLDivElement>(null);
   const line2Ref = useRef<HTMLDivElement>(null);
@@ -51,18 +54,13 @@ export default function AboutIntroSection() {
     >
       <div className="flex flex-col gap-6 items-start w-full">
 
-        {/* Label + divider */}
         <div className="flex flex-col gap-3 items-end w-full">
           <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm text-right uppercase w-full">
-            [ 8+ years in industry ]
+            {dict.yearsTag}
           </p>
           <div className="h-px w-full bg-black/20" />
         </div>
 
-        {/*
-            Mobile:  32px centered, 001 above, freelancer label below
-            Desktop: 6.67vw staggered, 001 inline, freelancer label absolute
-        */}
         <div className="flex flex-col gap-2 w-full items-center lg:items-start lg:gap-0">
 
           {/* 001 — mobile only */}
@@ -70,27 +68,26 @@ export default function AboutIntroSection() {
             001
           </p>
 
-          {/* Line 1: A creative director   / */}
+          {/* Line 1 */}
           <div className="flex items-start gap-3 justify-center w-full lg:justify-start">
             <div
               ref={line1Ref}
               className="font-sans font-light leading-[0] text-[32px] tracking-[-0.08em] uppercase lg:text-[6.67vw]"
             >
-              <p className="leading-[0.84] whitespace-pre">{`A creative director   /`}</p>
+              <p className="leading-[0.84] whitespace-pre">{dict.titleLine1}</p>
             </div>
-            {/* 001 — desktop only, inline */}
             <p className="hidden lg:block font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm pt-1">
               001
             </p>
           </div>
 
-          {/* Line 2: Photographer */}
+          {/* Line 2 */}
           <div className="w-full flex justify-center lg:justify-start lg:pl-[14.86vw]">
             <div
               ref={line2Ref}
               className="font-sans font-light leading-[0] text-[32px] tracking-[-0.08em] uppercase whitespace-nowrap lg:text-[6.67vw]"
             >
-              <p className="leading-[0.84]">Photographer</p>
+              <p className="leading-[0.84]">{dict.titleLine2}</p>
             </div>
           </div>
 
@@ -101,36 +98,36 @@ export default function AboutIntroSection() {
               className="font-sans font-light leading-[0] text-[32px] tracking-[-0.08em] uppercase whitespace-nowrap lg:text-[6.67vw]"
             >
               <p className="leading-[0.84]">
-                <span>Born </span>
+                <span>{dict.line3Pre}</span>
                 <span
                   className="font-[family-name:var(--font-playfair)] font-normal italic leading-[0.84]"
                   style={{ fontVariationSettings: "'opsz' 12, 'wdth' 100" }}
-                >&</span>
-                <span> raised</span>
+                >{dict.line3Connector}</span>
+                <span>{dict.line3Post}</span>
               </p>
             </div>
           </div>
 
-          {/* Line 4: on the south side */}
+          {/* Line 4 */}
           <div className="w-full flex justify-center lg:justify-start">
             <div
               ref={line4Ref}
               className="font-sans font-light leading-[0] text-[32px] tracking-[-0.08em] uppercase whitespace-nowrap lg:text-[6.67vw]"
             >
-              <p className="leading-[0.84]">on the south side</p>
+              <p className="leading-[0.84]">{dict.line4}</p>
             </div>
           </div>
 
-          {/* Line 5: of chicago. + [ creative freelancer ] */}
+          {/* Line 5 + freelancer tag */}
           <div className="relative flex flex-col gap-3 items-center w-full uppercase lg:items-start lg:pl-[42.08vw]">
             <div
               ref={line5Ref}
               className="font-sans font-light leading-[0] text-[32px] tracking-[-0.08em] uppercase whitespace-nowrap lg:text-[6.67vw]"
             >
-              <p className="leading-[0.84]">of chicago.</p>
+              <p className="leading-[0.84]">{dict.line5}</p>
             </div>
             <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-[#1f1f1f] text-sm whitespace-nowrap lg:absolute lg:left-[75vw] lg:top-[26px]">
-              [ creative freelancer ]
+              {dict.freelancerTag}
             </p>
           </div>
 

@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "title": "Harvey Specter | H.Studio",
+    "description": "Creative Director & Photographer born and raised on the south side of Chicago."
+  },
+  "nav": {
+    "logo": "H.Studio",
+    "links": [
+      { "label": "About",    "anchor": "about" },
+      { "label": "Services", "anchor": "services" },
+      { "label": "Projects", "anchor": "projects" },
+      { "label": "News",     "anchor": "news" },
+      { "label": "Contact",  "anchor": "contact" }
+    ],
+    "cta": "Let's talk"
+  },
+  "hero": {
+    "greeting": "[ Hello i'm ]",
+    "firstName": "Harvey",
+    "lastName": "Specter",
+    "descriptionPre": "H.Studio is a ",
+    "descriptionService": "full-service",
+    "descriptionMid": " creative studio creating beautiful digital experiences and products. We are an ",
+    "descriptionAward": "award winning",
+    "descriptionPost": " design and art group specializing in branding, web design and engineering.",
+    "cta": "Let's talk"
+  },
+  "aboutIntro": {
+    "yearsTag": "[ 8+ years in industry ]",
+    "titleLine1": "A creative director   /",
+    "titleLine2": "Photographer",
+    "line3Pre": "Born ",
+    "line3Connector": "&",
+    "line3Post": " raised",
+    "line4": "on the south side",
+    "line5": "of chicago.",
+    "freelancerTag": "[ creative freelancer ]"
+  },
+  "about": {
+    "tag": "[ About ]",
+    "body": "Placeholder paragraph one. This is where you introduce yourself — your background, your passion for your craft, and what drives you creatively. Two to three sentences work best here. Placeholder paragraph two. Here you can describe your technical approach, how you collaborate with clients, or what sets your work apart from others in your field.",
+    "imageAlt": "Harvey Specter portrait"
+  },
+  "services": {
+    "tag": "[ services ]",
+    "deliverables": "Deliverables",
+    "items": [
+      {
+        "title": "Brand Discovery",
+        "description": "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences."
+      },
+      {
+        "title": "Web Design & Dev",
+        "description": "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences."
+      },
+      {
+        "title": "Marketing",
+        "description": "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences."
+      },
+      {
+        "title": "Photography",
+        "description": "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences."
+      }
+    ]
+  },
+  "selectedWork": {
+    "tag": "[ portfolio ]",
+    "title1": "Selected",
+    "title2": "Work",
+    "description": "Discover how my creativity transforms ideas into impactful digital experiences — schedule a call with me to get started.",
+    "cta": "Let's talk"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "cards": [
+      {
+        "quote": "A brilliant creative partner who transformed our vision into a unique, high-impact brand identity. Their ability to craft everything from custom mascots to polished logos is truly impressive.",
+        "name": "Marko Stojković"
+      },
+      {
+        "quote": "Professional, precise, and incredibly fast at handling complex product visualizations and templates.",
+        "name": "Lukas Weber"
+      },
+      {
+        "quote": "A strategic partner who balances stunning aesthetics with high-performance UX for complex platforms. They don't just make things look good; they solve business problems through visual clarity.",
+        "name": "Sarah Jenkins"
+      },
+      {
+        "quote": "An incredibly versatile designer who delivers consistent quality across a wide range of styles and formats.",
+        "name": "Sofia Martínez"
+      }
+    ]
+  },
+  "latestNews": {
+    "title": "Keep up with my latest news & achievements",
+    "readMore": "Read more",
+    "articles": [
+      { "caption": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+      { "caption": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+      { "caption": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." }
+    ]
+  },
+  "footer": {
+    "cta": "Have a project in mind?",
+    "ctaButton": "Let's talk",
+    "licences": "Licences",
+    "privacy": "Privacy policy",
+    "credit": "[ Coded By Claude ]",
+    "logo": "H.Studio"
+  }
+}

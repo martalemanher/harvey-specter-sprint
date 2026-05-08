@@ -1,57 +1,33 @@
-const SERVICES = [
-  {
-    number: "[ 1 ]",
-    title: "Brand Discovery",
-    description:
-      "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences.",
-    img: "/service-1.png",
-  },
-  {
-    number: "[ 2 ]",
-    title: "Web Design & Dev",
-    description:
-      "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences.",
-    img: "/service-2.png",
-  },
-  {
-    number: "[ 3 ]",
-    title: "Marketing",
-    description:
-      "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences.",
-    img: "/service-3.png",
-  },
-  {
-    number: "[ 4 ]",
-    title: "Photography",
-    description:
-      "Placeholder description of this service. Explain the value you provide and the outcomes clients can expect. Keep it to two or three sentences.",
-    img: "/service-4.png",
-  },
-];
+import type { Dictionary } from '@/app/[lang]/dictionaries'
 
-export default function ServicesSection() {
+type Props = { dict: Dictionary['services'] }
+
+const SERVICE_IMAGES = ['/service-1.png', '/service-2.png', '/service-3.png', '/service-4.png']
+const SERVICE_NUMBERS = ['[ 1 ]', '[ 2 ]', '[ 3 ]', '[ 4 ]']
+
+export default function ServicesSection({ dict }: Props) {
   return (
     <section data-nav-theme="dark" className="bg-black flex flex-col gap-8 px-4 py-12 lg:gap-12 lg:px-8 lg:py-20">
 
       {/* [ services ] label */}
       <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-white text-sm uppercase whitespace-nowrap">
-        [ services ]
+        {dict.tag}
       </p>
 
       {/* [4]   DELIVERABLES header */}
       <div className="flex items-center justify-between font-sans font-light leading-none text-white uppercase whitespace-nowrap text-[32px] tracking-[-2.56px] lg:text-[96px] lg:tracking-[-7.68px]">
         <span>[4]</span>
-        <span>Deliverables</span>
+        <span>{dict.deliverables}</span>
       </div>
 
       {/* Service rows */}
       <div className="flex flex-col gap-12">
-        {SERVICES.map((service) => (
-          <div key={service.number} className="group flex flex-col gap-[9px] cursor-pointer -mx-4 px-4 py-3 lg:-mx-8 lg:px-8 rounded-sm transition-colors duration-300 hover:bg-white/[0.04]">
+        {dict.items.map((service, i) => (
+          <div key={service.title} className="group flex flex-col gap-[9px] cursor-pointer -mx-4 px-4 py-3 lg:-mx-8 lg:px-8 rounded-sm transition-colors duration-300 hover:bg-white/[0.04]">
 
             {/* Number label + divider */}
             <p className="font-[family-name:var(--secondary-family,'Geist_Mono:Regular',sans-serif)] font-normal leading-[1.1] text-white text-sm uppercase">
-              {service.number}
+              {SERVICE_NUMBERS[i]}
             </p>
             <div className="border-t border-white/30 w-full transition-colors duration-300 group-hover:border-white/60" />
 
@@ -72,7 +48,7 @@ export default function ServicesSection() {
                   <img
                     alt=""
                     className="absolute inset-0 max-w-none object-cover size-full transition-transform duration-500 ease-out group-hover:scale-110"
-                    src={service.img}
+                    src={SERVICE_IMAGES[i]}
                   />
                 </div>
               </div>

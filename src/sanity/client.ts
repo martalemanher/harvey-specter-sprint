@@ -8,7 +8,7 @@ export const client = createClient({
   useCdn: true,
 })
 
-export const PORTFOLIO_QUERY = defineQuery(`
+const PORTFOLIO_QUERY_EN = defineQuery(`
   *[_type == "portfolio"] | order(order asc) {
     _id,
     title,
@@ -18,6 +18,20 @@ export const PORTFOLIO_QUERY = defineQuery(`
       alt
     },
     tags,
+    projectUrl
+  }
+`)
+
+const PORTFOLIO_QUERY_ES = defineQuery(`
+  *[_type == "portfolio"] | order(order asc) {
+    _id,
+    "title": coalesce(titleEs, title),
+    "slug": slug.current,
+    coverImage {
+      asset->{ _id, url, metadata { lqip, dimensions } },
+      alt
+    },
+    "tags": coalesce(tagsEs, tags),
     projectUrl
   }
 `)
@@ -34,6 +48,7 @@ export type PortfolioItem = {
   projectUrl?: string
 }
 
-export async function getPortfolioItems(): Promise<PortfolioItem[]> {
-  return client.fetch(PORTFOLIO_QUERY, {}, { next: { tags: ['portfolio'] } })
+export async function getPortfolioItems(locale = 'en'): Promise<PortfolioItem[]> {
+  const query = locale === 'es' ? PORTFOLIO_QUERY_ES : PORTFOLIO_QUERY_EN
+  return client.fetch(query, {}, { next: { tags: ['portfolio'] } })
 }

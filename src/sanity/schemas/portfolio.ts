@@ -10,8 +10,14 @@ export const portfolio = defineType({
     defineField({
       name: 'title',
       type: 'string',
-      title: 'Title',
+      title: 'Title (English)',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'titleEs',
+      type: 'string',
+      title: 'Title (Spanish)',
+      description: 'Leave blank to fall back to the English title.',
     }),
     defineField({
       name: 'slug',
@@ -37,7 +43,15 @@ export const portfolio = defineType({
     defineField({
       name: 'tags',
       type: 'array',
-      title: 'Tags',
+      title: 'Tags (English)',
+      of: [defineArrayMember({ type: 'string' })],
+      options: { layout: 'tags' },
+    }),
+    defineField({
+      name: 'tagsEs',
+      type: 'array',
+      title: 'Tags (Spanish)',
+      description: 'Leave blank to fall back to the English tags.',
       of: [defineArrayMember({ type: 'string' })],
       options: { layout: 'tags' },
     }),
