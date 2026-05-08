@@ -20,6 +20,7 @@ export default function Navbar({ dict, locale }: Props) {
   const linkEls = useRef<(HTMLAnchorElement | null)[]>([]);
   const ctaDesktopEl = useRef<HTMLButtonElement>(null);
   const hamburgerEl = useRef<HTMLButtonElement>(null);
+  const langSwitcherEl = useRef<HTMLDivElement>(null);
 
   const menuEl = useRef<HTMLDivElement>(null);
   const mobileLinkEls = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -51,6 +52,10 @@ export default function Navbar({ dict, locale }: Props) {
     if (hamburgerEl.current) {
       const lines = hamburgerEl.current.querySelectorAll("line");
       gsap.to(Array.from(lines), { stroke: fg, duration: dur, ease });
+    }
+
+    if (langSwitcherEl.current) {
+      gsap.to(langSwitcherEl.current, { color: fg, duration: dur, ease });
     }
   }, []);
 
@@ -222,7 +227,7 @@ export default function Navbar({ dict, locale }: Props) {
         {/* Right side: lang switcher + CTA */}
         <div className="flex items-center gap-4">
           {/* Language switcher */}
-          <div className="hidden lg:flex items-center gap-1 font-sans font-medium text-sm tracking-[-0.56px] leading-none">
+          <div ref={langSwitcherEl} className="hidden lg:flex items-center gap-1 font-sans font-medium text-sm tracking-[-0.56px] leading-none">
             <a
               href={enHref}
               className={`transition-opacity duration-200 ${locale === "en" ? "opacity-100" : "opacity-40 hover:opacity-70"}`}
